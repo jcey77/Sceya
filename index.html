@@ -148,6 +148,30 @@ let settings = JSON.parse(localStorage.getItem('sh_set_v13')) || { dana:'0895324
 let promos = JSON.parse(localStorage.getItem('sh_promo_v13')) || {};
 let currentTab = 'app';
 let activeDiscount = 0;
+function sendToWA() {
+    const userLink = document.getElementById('buyer-name').value || "Tidak diisi";
+    const cat = document.getElementById('category').value;
+    const sIdx = document.getElementById('service').value;
+    const code = document.getElementById('redeem-input').value.toUpperCase() || "-";
+
+    if (!cat || sIdx === "") return alert("Pilih paketnya dulu ya, Shey!");
+
+    let pr = fullData[currentTab][cat][sIdx];
+    let fP = Math.max(0, pr.p - activeDiscount);
+
+    // FORMAT PESAN (Tanpa kata Store)
+    const text = `*─── ୨ SHEYYA ORDER ୧ ───*%0A` +
+                 `👤 *Username/Link:* ${userLink}%0A` +
+                 `📦 *Pesanan:* ${cat} - ${pr.n}%0A` +
+                 `🎟️ *Promo:* ${code}%0A` +
+                 `💸 *Potongan:* Rp ${activeDiscount.toLocaleString('id-ID')}%0A` +
+                 `⭐ *Total:* Rp ${fP.toLocaleString('id-ID')}%0A` +
+                 `🖼️ *Bukti Pembayaran:* (Silakan lampirkan foto)%0A` +
+                 `*──────────────────────────*%0A` +
+                 `_Text Me: 0895324866749_`;
+
+    window.open(`https://wa.me/62895324866749?text=${text}`);
+}
 
 function openAdmin() {
     if(prompt("Sandi:") === "SHEYYA221") {
